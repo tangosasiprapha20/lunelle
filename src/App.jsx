@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/Home.jsx";
@@ -6,7 +6,21 @@ import Cart from "./pages/Cart.jsx";
 import Login from "./pages/Login.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Contact from "./pages/Contact.jsx";
+import About from "./pages/About.jsx";
 import OrderHistory from "./pages/OrderHistory.jsx";
+
+import imgDonut from "./assets/โดนัทซอฟ.jpg";
+import imgMatchaIce from "./assets/ไอศกรีมมัทจะ.jpg";
+import imgIceCone from "./assets/ไอศกรีมโคน.jpg";
+import imgButterCookie from "./assets/คุกกี้เนยสด.jpg";
+import imgIcingCookie from "./assets/คุกกี้ไอซ์ซิ่ง.jpg";
+import imgJelly from "./assets/เจลลี่.jpg";
+import imgTruffle from "./assets/ช็อกโกแลตทรัฟ.jpg";
+import imgMarshmallow from "./assets/มาร์ชเมล.jpg";
+import imgPopcorn from "./assets/ป๊อปคอนคาราเมล.jpg";
+import imgMiniSnackBox from "./assets/กล่องขนมมะตุด.jpg";
+import imgGiftBox from "./assets/กล่องของขวัญ.jpg";
+import imgPudding from "./assets/พุดดิ้วมะพร้าว.jpg";
 
 /** ส่งออเดอร์ไป Discord */
 async function sendOrderToDiscord({
@@ -44,7 +58,7 @@ async function sendOrderToDiscord({
   const payload = {
     embeds: [
       {
-        title: `🛒 ออเดอร์ #${orderId}`,
+        title: `🍬 ออเดอร์ #${orderId}`,
         color: 0x111111,
 
         fields: [
@@ -63,7 +77,7 @@ async function sendOrderToDiscord({
             value: address || "-",
           },
           {
-            name: "📦 รายการสินค้า",
+            name: "🍭 รายการขนม",
             value: items || "-",
           },
           {
@@ -74,7 +88,7 @@ async function sendOrderToDiscord({
         ],
 
         footer: {
-          text: "Mellow Closet Order System",
+          text: "Softlane Order System",
         },
 
         timestamp: new Date().toISOString(),
@@ -140,7 +154,7 @@ async function sendOrderCancellationToDiscord(order) {
           { name: "👤 ลูกค้า", value: order.name || "-", inline: true },
           { name: "📞 เบอร์", value: order.phone || "-", inline: true },
           { name: "📍 ที่อยู่", value: order.address || "-" },
-          { name: "📦 รายการสินค้า", value: itemsText || "-" },
+          { name: "📦 รายการขนม", value: itemsText || "-" },
           { name: "💰 ยอดเดิม", value: `฿${order.total || 0}`, inline: true },
           {
             name: "🕒 เวลาที่ยกเลิก",
@@ -150,7 +164,7 @@ async function sendOrderCancellationToDiscord(order) {
             inline: true,
           },
         ],
-        footer: { text: "Mellow Closet Order System" },
+        footer: { text: "Softlane Order System" },
         timestamp: new Date().toISOString(),
       },
     ],
@@ -168,144 +182,86 @@ async function sendOrderCancellationToDiscord(order) {
   }
 }
 
-/** ส่งแจ้งเตือนล็อกอินเข้า Discord */
-async function sendLoginToDiscord(email) {
-  const url = import.meta.env.VITE_DISCORD_WEBHOOK_URL;
-  if (!url) return;
-
-  const payload = {
-    embeds: [
-      {
-        title: "🔐 มีผู้ใช้เข้าสู่ระบบ",
-        color: 0x2563eb,
-        fields: [
-          {
-            name: "📧 อีเมล",
-            value: email || "-",
-          },
-          {
-            name: "🕒 เวลา",
-            value: new Date().toLocaleString("th-TH"),
-            inline: true,
-          },
-        ],
-        footer: { text: "Mellow Closet Login Monitor" },
-        timestamp: new Date().toISOString(),
-      },
-    ],
-  };
-
-  try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    console.log("Discord login status:", res.status);
-  } catch (err) {
-    console.log("Discord login error:", err);
-  }
-}
-
 export default function App() {
   const [cart, setCart] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [orderHistory, setOrderHistory] = useState([]);
+  const [orderHistory, setOrderHistory] = useState(() => {
+    try {
+      const raw =
+        localStorage.getItem("softlane.orderHistory") ??
+        localStorage.getItem("mellow.orderHistory");
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
 
   // ✅ เลขออเดอร์
-  const [orderId, setOrderId] = useState(1001);
+  const [orderId, setOrderId] = useState(() => {
+    try {
+      const raw =
+        localStorage.getItem("softlane.orderId") ??
+        localStorage.getItem("mellow.orderId");
+      const n = raw ? Number(raw) : 1001;
+      return Number.isFinite(n) ? n : 1001;
+    } catch {
+      return 1001;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("softlane.orderHistory", JSON.stringify(orderHistory));
+    } catch {
+      // ignore write failures
+    }
+  }, [orderHistory]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("softlane.orderId", String(orderId));
+    } catch {
+      // ignore write failures
+    }
+  }, [orderId]);
 
   const products = [
+    { id: 1, name: "โดนัทซอฟ", price: 89, image: imgDonut },
+    { id: 2, name: "ไอศกรีมมัทฉะ", price: 95, image: imgMatchaIce },
+    { id: 3, name: "ไอศกรีมโคน", price: 75, image: imgIceCone },
+    { id: 4, name: "คุกกี้เนยสด", price: 55, image: imgButterCookie },
+    { id: 5, name: "คุกกี้ไอซ์ซิ่ง", price: 62, image: imgIcingCookie },
+    { id: 6, name: "เจลลี่ผลไม้", price: 45, image: imgJelly },
+    { id: 7, name: "ช็อกโกแลตทรัฟ", price: 85, image: imgTruffle },
+    { id: 8, name: "มาร์ชแมลโลว์", price: 59, image: imgMarshmallow },
+    { id: 9, name: "ป๊อปคอร์นคาราเมล", price: 72, image: imgPopcorn },
+    { id: 10, name: "กล่องขนมมินิ", price: 129, image: imgMiniSnackBox },
+  ];
+
+  /** ขนมที่กำลังจะเข้าเร็วๆ นี้ (แสดงหน้าแรกเท่านั้น ยังไม่ใส่ตะกร้า) */
+  const comingSoon = [
     {
-      id: 1,
-      name: "Vintage Jacket",
-      price: 390,
+      id: "soon-1",
+      name: "ชุดขนมปิกนิกหวานละมุน",
+      teaser: "คุกกี้ มาการอง และนมร้อน",
+      eta: "ปลายเดือนนี้",
       image:
-        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?q=80&w=1200&auto=format&fit=crop",
     },
     {
-      id: 2,
-      name: "Korean Shirt",
-      price: 250,
-      image:
-        "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
+      id: "soon-2",
+      name: "กล่องของขวัญวันเกิด",
+      teaser: "ลูกอม + การ์ดน่ารัก",
+      eta: "เร็วๆ นี้",
+      image: imgGiftBox,
     },
     {
-      id: 3,
-      name: "Brown Hoodie",
-      price: 320,
-      image:
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 4,
-      name: "Denim Jeans",
-      price: 420,
-      image:
-        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 5,
-      name: "Canvas Tote Bag",
-      price: 180,
-      image:
-        "https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 6,
-      name: "Wool Sweater",
-      price: 360,
-      image:
-        "https://images.unsplash.com/photo-1520975958221-6d6f4b0b0e8a?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 7,
-      name: "Black Dress",
-      price: 490,
-      image:
-        "https://images.unsplash.com/photo-1520975693411-35a46e33f3c3?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 8,
-      name: "Leather Belt",
-      price: 160,
-      image:
-        "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 9,
-      name: "Sneakers",
-      price: 520,
-      image:
-        "https://images.unsplash.com/photo-1528701800489-20be3c2ea06b?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 10,
-      name: "Beanie Hat",
-      price: 120,
-      image:
-        "https://images.unsplash.com/photo-1520975917031-7b3cbb77c4a1?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 11,
-      name: "Plaid Skirt",
-      price: 310,
-      image:
-        "https://images.unsplash.com/photo-1520975809650-44d72c36b2b6?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 12,
-      name: "Oversized Blazer",
-      price: 540,
-      image:
-        "https://images.unsplash.com/photo-1520975867597-0f0c0f2d8f2b?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      id: 13,
-      name: "Classic White Tee",
-      price: 190,
-      image:
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
+      id: "soon-3",
+      name: "พุดดิ้งมะพร้าวอ่อน",
+      teaser: "หวานน้อย เนียนนุ่ม",
+      eta: "สัปดาห์หน้า",
+      image: imgPudding,
     },
   ];
 
@@ -405,9 +361,10 @@ export default function App() {
     }
   };
 
-  const handleLoginSuccess = async (email) => {
-    setIsLoggedIn(true);
-    await sendLoginToDiscord(email);
+  const deleteOrderFromHistory = (targetOrderId) => {
+    setOrderHistory((prev) =>
+      prev.filter((order) => order.orderId !== targetOrderId)
+    );
   };
 
   return (
@@ -420,10 +377,7 @@ export default function App() {
             isLoggedIn ? (
               <Navigate to="/home" replace />
             ) : (
-              <Login
-                setIsLoggedIn={setIsLoggedIn}
-                onLoginSuccess={handleLoginSuccess}
-              />
+              <Login setIsLoggedIn={setIsLoggedIn} />
             )
           }
         />
@@ -434,6 +388,7 @@ export default function App() {
             isLoggedIn ? (
               <Home
                 products={products}
+                comingSoon={comingSoon}
                 addToCart={addToCart}
                 cart={cart}
                 setIsLoggedIn={setIsLoggedIn}
@@ -451,6 +406,9 @@ export default function App() {
               <OrderHistory
                 orderHistory={orderHistory}
                 onCancelOrder={cancelOrder}
+                onDeleteOrder={deleteOrderFromHistory}
+                cart={cart}
+                setIsLoggedIn={setIsLoggedIn}
               />
             ) : (
               <Navigate to="/" replace />
@@ -465,6 +423,7 @@ export default function App() {
               <Cart
                 cart={cart}
                 removeFromCart={removeFromCart}
+                setIsLoggedIn={setIsLoggedIn}
               />
             ) : (
               <Navigate to="/" replace />
@@ -479,6 +438,7 @@ export default function App() {
               <Checkout
                 cart={cart}
                 clearCart={clearCart}
+                setIsLoggedIn={setIsLoggedIn}
               />
             ) : (
               <Navigate to="/" replace />
@@ -490,7 +450,24 @@ export default function App() {
           path="/contact"
           element={
             isLoggedIn ? (
-              <Contact />
+              <Contact
+                cart={cart}
+                setIsLoggedIn={setIsLoggedIn}
+              />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/about"
+          element={
+            isLoggedIn ? (
+              <About
+                cart={cart}
+                setIsLoggedIn={setIsLoggedIn}
+              />
             ) : (
               <Navigate to="/" replace />
             )

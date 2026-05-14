@@ -38,7 +38,7 @@ export default function Checkout({
   }, [total]);
 
   const fieldClass =
-    "mb-3 w-full rounded-2xl border-2 border-zinc-200 bg-zinc-50/80 p-3.5 text-base text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:bg-white";
+    "mb-3 w-full rounded-2xl border-2 border-[#c9b49a] bg-[#faf4ea]/90 p-3.5 text-base text-[#3c2a22] outline-none transition placeholder:text-[#a67c52] focus:border-[#5c3d2e] focus:bg-[#fffdf8]";
 
   const isCustomerInfoValid =
     name.trim().length > 0 &&
@@ -101,19 +101,19 @@ export default function Checkout({
     <ShopShell cart={cart} setIsLoggedIn={setIsLoggedIn}>
       <div className="mx-auto grid max-w-3xl gap-8 lg:grid-cols-5 lg:items-start">
         <div className="lg:col-span-3">
-          <div className="rounded-[2rem] border-2 border-dashed border-zinc-300 bg-white p-6 shadow-md md:p-8">
-            <p className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-900">
+          <div className="rounded-[2rem] border-2 border-dashed border-[#a67c52]/55 bg-[#fffdf8] p-6 shadow-[5px_5px_0_0_rgba(92,61,46,0.08)] md:p-8">
+            <p className="font-craft inline-flex rounded-2xl border border-[#c9b49a] bg-[#efe4d4] px-3 py-1 text-xs font-bold tracking-wide text-[#5c3d2e]">
               Checkout
             </p>
-            <h1 className="mt-3 text-2xl font-bold text-zinc-900 md:text-3xl">
+            <h1 className="font-craft mt-3 text-2xl font-bold text-[#3c2a22] md:text-3xl">
               ชำระเงิน
             </h1>
-            <p className="mt-2 text-sm text-zinc-600">
+            <p className="mt-2 text-sm text-[#5c4d3f]">
               กรอกข้อมูลจัดส่ง แล้วเปิด QR พร้อมเพย์
             </p>
 
             <div className="mt-6 space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+              <label className="text-xs font-bold uppercase tracking-wider text-[#6b4f3c]">
                 ชื่อ
               </label>
               <input
@@ -127,7 +127,7 @@ export default function Checkout({
             </div>
 
             <div className="mt-1 space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+              <label className="text-xs font-bold uppercase tracking-wider text-[#6b4f3c]">
                 เบอร์โทร
               </label>
               <input
@@ -142,7 +142,7 @@ export default function Checkout({
             </div>
 
             <div className="mt-1 space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+              <label className="text-xs font-bold uppercase tracking-wider text-[#6b4f3c]">
                 ที่อยู่
               </label>
               <textarea
@@ -162,21 +162,21 @@ export default function Checkout({
                 disabled={!isCustomerInfoValid || !items.length}
                 className={`mt-6 w-full rounded-full border-2 py-3.5 text-sm font-black uppercase tracking-wide transition ${
                   isCustomerInfoValid && items.length
-                    ? "border-zinc-900 bg-zinc-900 text-white hover:bg-white hover:text-zinc-900"
-                    : "cursor-not-allowed border-zinc-200 bg-zinc-100 text-zinc-400"
+                    ? "border-[#5c3d2e] bg-[#5c3d2e] text-[#faf4ea] shadow-[3px_3px_0_0_rgba(201,180,154,0.45)] hover:bg-[#fffdf8] hover:text-[#3c2a22]"
+                    : "cursor-not-allowed border-[#dccfb8] bg-[#efe4d4] text-[#a67c52]"
                 }`}
               >
                 ชำระเงิน (PromptPay)
               </button>
             ) : (
               <div className="mt-6 space-y-5">
-                <div className="rounded-[1.5rem] border-2 border-zinc-200 bg-zinc-50 p-5 text-center">
-                  <h2 className="text-lg font-bold text-zinc-900">
+                <div className="rounded-[1.5rem] border-2 border-[#c9b49a] bg-[#faf4ea] p-5 text-center">
+                  <h2 className="font-craft text-lg font-bold text-[#3c2a22]">
                     สแกนเพื่อโอน
                   </h2>
 
                   {promptPayPayload ? (
-                    <div className="mt-4 flex justify-center rounded-2xl bg-white p-4 ring-2 ring-zinc-100">
+                    <div className="mt-4 flex justify-center rounded-2xl bg-[#fffdf8] p-4 ring-2 ring-[#dccfb8]">
                       <QRCodeSVG value={promptPayPayload} size={200} />
                     </div>
                   ) : (
@@ -185,9 +185,9 @@ export default function Checkout({
                     </p>
                   )}
 
-                  <p className="mt-4 text-sm font-bold text-zinc-600">
+                  <p className="mt-4 text-sm font-bold text-[#5c4d3f]">
                     ยอด{" "}
-                    <span className="text-lg text-zinc-900">฿{total}</span>
+                    <span className="text-lg text-[#3c2a22]">฿{total}</span>
                   </p>
                 </div>
 
@@ -197,8 +197,8 @@ export default function Checkout({
                   disabled={isSubmitting}
                   className={`w-full rounded-full border-2 py-3.5 text-sm font-black transition ${
                     isSubmitting
-                      ? "cursor-not-allowed border-zinc-200 bg-zinc-100 text-zinc-400"
-                      : "border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-500"
+                      ? "cursor-not-allowed border-[#dccfb8] bg-[#efe4d4] text-[#a67c52]"
+                      : "border-emerald-700 bg-emerald-700 text-white hover:bg-emerald-600"
                   }`}
                 >
                   {isSubmitting ? "กำลังส่งออเดอร์..." : "ยืนยันออเดอร์"}
@@ -206,12 +206,12 @@ export default function Checkout({
 
                 <Link
                   to="/orders"
-                  className="flex w-full items-center justify-center rounded-full border-2 border-zinc-200 bg-white py-3 text-sm font-bold text-zinc-800 transition hover:bg-zinc-50"
+                  className="flex w-full items-center justify-center rounded-2xl border-2 border-[#c9b49a] bg-[#fffdf8] py-3 text-sm font-bold text-[#3c2a22] transition hover:bg-[#faf4ea]"
                 >
                   ดูประวัติการสั่งซื้อ
                 </Link>
 
-                <p className="text-center text-xs font-medium text-zinc-500">
+                <p className="text-center text-xs font-medium text-[#6b4f3c]">
                   โอนแล้วแจ้งสลิปใน Line / Instagram
                 </p>
               </div>
@@ -220,22 +220,22 @@ export default function Checkout({
         </div>
 
         <aside className="lg:col-span-2">
-          <div className="sticky top-24 space-y-4 rounded-[1.75rem] border-2 border-zinc-900 bg-zinc-900 p-5 text-white shadow-xl">
-            <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-              สรุปขนมในตะกร้า
+          <div className="sticky top-24 space-y-4 rounded-[1.75rem] border-2 border-[#5c3d2e] bg-[#4a3228] p-5 text-[#faf4ea] shadow-[5px_6px_0_0_rgba(201,180,154,0.4)]">
+            <p className="font-craft text-xs font-bold tracking-wide text-[#dccfb8]">
+              สรุปสินค้าในตะกร้า
             </p>
             {items.length === 0 ? (
-              <p className="mt-2 text-sm text-zinc-400">ตะกร้าว่าง</p>
+              <p className="mt-2 text-sm text-[#c9b49a]">ตะกร้าว่าง</p>
             ) : (
               <ul className="max-h-64 space-y-2 overflow-y-auto text-sm">
                 {items.map((item) => (
                   <li
                     key={item.id}
-                    className="flex justify-between gap-2 border-b border-white/10 pb-2 last:border-0"
+                    className="flex justify-between gap-2 border-b border-[#faf4ea]/10 pb-2 last:border-0"
                   >
-                    <span className="truncate font-medium text-zinc-200">
+                    <span className="truncate font-medium text-[#efe4d4]">
                       {item.name}{" "}
-                      <span className="text-zinc-500">
+                      <span className="text-[#c9b49a]">
                         ×{item.quantity || 1}
                       </span>
                     </span>
@@ -243,15 +243,15 @@ export default function Checkout({
                 ))}
               </ul>
             )}
-            <div className="flex items-baseline justify-between border-t border-white/15 pt-4">
-              <span className="text-sm font-semibold text-zinc-400">รวม</span>
-              <span className="text-2xl font-black tabular-nums">฿{total}</span>
+            <div className="flex items-baseline justify-between border-t border-[#faf4ea]/15 pt-4">
+              <span className="text-sm font-semibold text-[#dccfb8]">รวม</span>
+              <span className="text-2xl font-bold tabular-nums">฿{total}</span>
             </div>
             <Link
               to="/cart"
-              className="block rounded-full border-2 border-white/30 py-2.5 text-center text-xs font-bold text-white transition hover:bg-white/10"
+              className="block rounded-2xl border-2 border-[#faf4ea]/25 py-2.5 text-center text-xs font-bold text-[#faf4ea] transition hover:bg-[#faf4ea]/10"
             >
-              แก้ไขตะกร้า / เพิ่มขนม
+              แก้ไขตะกร้า / เพิ่มสินค้า
             </Link>
           </div>
         </aside>
@@ -284,7 +284,7 @@ export default function Checkout({
               <Link
                 to="/orders"
                 onClick={() => setToast(null)}
-                className="block w-full rounded-full border-2 border-zinc-900 bg-zinc-900 py-2.5 text-center text-sm font-bold text-white transition hover:bg-white hover:text-zinc-900"
+                className="font-craft block w-full rounded-2xl border-2 border-[#5c3d2e] bg-[#5c3d2e] py-2.5 text-center text-sm font-bold text-[#faf4ea] transition hover:bg-[#fffdf8] hover:text-[#3c2a22]"
               >
                 ดูประวัติการสั่งซื้อ
               </Link>

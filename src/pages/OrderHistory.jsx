@@ -28,30 +28,30 @@ export default function OrderHistory({
       <div className="mx-auto max-w-2xl space-y-8">
         <Link
           to="/home"
-          className="inline-flex items-center gap-2 rounded-full border-2 border-zinc-200 bg-white px-4 py-2 text-sm font-bold text-zinc-600 shadow-sm transition hover:border-zinc-300 hover:text-zinc-900"
+          className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#c9b49a] bg-[#fffdf8] px-4 py-2 text-sm font-bold text-[#5c4d3f] shadow-sm transition hover:border-[#a67c52] hover:text-[#3c2a22]"
         >
-          <ArrowLeft className="h-4 w-4" strokeWidth={2} />
+          <ArrowLeft className="h-4 w-4" strokeWidth={1.75} />
           กลับหน้าแรก
         </Link>
 
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+          <h1 className="font-craft text-3xl font-bold tracking-wide text-[#3c2a22]">
             ประวัติออเดอร์
           </h1>
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-[#5c4d3f]">
             บันทึกไว้ในเครื่องของคุณ — ลบรายการที่ไม่ต้องการเก็บได้
           </p>
         </div>
 
         {orderHistory.length === 0 ? (
-          <div className="rounded-[2rem] border-2 border-dashed border-zinc-300 bg-white/80 px-6 py-16 text-center">
+          <div className="rounded-[2rem] border-2 border-dashed border-[#dccfb8] bg-[#fffdf8]/90 px-6 py-16 text-center">
             <p className="text-4xl">📋</p>
-            <p className="mt-4 text-zinc-600">ยังไม่มีประวัติการสั่งซื้อ</p>
+            <p className="mt-4 text-[#5c4d3f]">ยังไม่มีประวัติการสั่งซื้อ</p>
             <Link
               to="/home"
-              className="mt-6 inline-flex rounded-full border-2 border-zinc-900 bg-zinc-900 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-white hover:text-zinc-900"
+              className="font-craft mt-6 inline-flex rounded-2xl border-2 border-[#5c3d2e] bg-[#5c3d2e] px-6 py-2.5 text-sm font-bold text-[#faf4ea] shadow-[3px_3px_0_0_rgba(201,180,154,0.45)] transition hover:bg-[#fffdf8] hover:text-[#3c2a22]"
             >
-              ไปเลือกขนม
+              ไปเลือกสินค้า
             </Link>
           </div>
         ) : (
@@ -59,10 +59,10 @@ export default function OrderHistory({
             {orderHistory.map((order) => (
               <li
                 key={order.orderId}
-                className="overflow-hidden rounded-[1.75rem] border-2 border-zinc-200 bg-white shadow-md"
+                className="overflow-hidden rounded-2xl border-2 border-[#c9b49a] bg-[#fffdf8] shadow-[4px_5px_0_0_rgba(92,61,46,0.08)]"
               >
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100 bg-zinc-50 px-5 py-4">
-                  <p className="text-lg font-black text-zinc-900">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#dccfb8] bg-[#efe4d4] px-5 py-4">
+                  <p className="text-lg font-black text-[#3c2a22]">
                     #{order.orderId}
                   </p>
                   <div className="flex flex-wrap items-center gap-2">
@@ -77,32 +77,32 @@ export default function OrderHistory({
                         ? "ยกเลิกแล้ว"
                         : "ชำระเงินแล้ว"}
                     </span>
-                    <p className="text-xs font-medium text-zinc-500">
+                    <p className="text-xs font-medium text-[#6b4f3c]">
                       {new Date(order.createdAt).toLocaleString("th-TH")}
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-1 px-5 py-4 text-sm text-zinc-700">
+                <div className="space-y-1 px-5 py-4 text-sm text-[#5c4d3f]">
                   <p>
-                    <span className="font-bold text-zinc-500">ลูกค้า</span>{" "}
+                    <span className="font-bold text-[#6b4f3c]">ลูกค้า</span>{" "}
                     {order.name || "-"}
                   </p>
                   <p>
-                    <span className="font-bold text-zinc-500">เบอร์</span>{" "}
+                    <span className="font-bold text-[#6b4f3c]">เบอร์</span>{" "}
                     {order.phone || "-"}
                   </p>
                   <p>
-                    <span className="font-bold text-zinc-500">ที่อยู่</span>{" "}
+                    <span className="font-bold text-[#6b4f3c]">ที่อยู่</span>{" "}
                     {order.address || "-"}
                   </p>
                 </div>
 
-                <div className="mx-5 mb-4 rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 p-3">
+                <div className="mx-5 mb-4 rounded-2xl border-2 border-dashed border-[#c9b49a] bg-[#efe4d4] p-3">
                   {order.items.map((item, idx) => (
                     <p
                       key={`${order.orderId}-${item.id}-${idx}`}
-                      className="text-sm text-zinc-700"
+                      className="text-sm text-[#5c4d3f]"
                     >
                       {item.name} ×{item.quantity || 1} = ฿
                       {item.price * (item.quantity || 1)}
@@ -110,8 +110,8 @@ export default function OrderHistory({
                   ))}
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-zinc-100 px-5 py-4">
-                  <p className="text-base font-black text-zinc-900">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#dccfb8] px-5 py-4">
+                  <p className="text-base font-black text-[#3c2a22]">
                     รวม ฿{order.total}
                   </p>
                   <div className="flex flex-wrap items-center justify-end gap-2">
@@ -134,7 +134,7 @@ export default function OrderHistory({
                     <button
                       type="button"
                       onClick={() => handleDelete(order.orderId)}
-                      className="rounded-full border-2 border-zinc-200 bg-zinc-100 px-4 py-2 text-xs font-bold text-zinc-800 transition hover:bg-zinc-200"
+                      className="rounded-2xl border-2 border-[#c9b49a] bg-[#efe4d4] px-4 py-2 text-xs font-bold text-[#3c2a22] transition hover:bg-[#dccfb8]"
                     >
                       ลบจากประวัติ
                     </button>

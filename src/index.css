@@ -1,26 +1,31 @@
 @import "tailwindcss";
 
-:root {
-  --text: #52525b;
-  --text-h: #18181b;
-  --bg: #fafafa;
-  --surface: #ffffff;
-  --border: #e4e4e7;
-  --code-bg: #f4f4f5;
-  --accent: #3f3f46;
-  --accent-hover: #27272a;
-  --accent-bg: rgba(63, 63, 70, 0.08);
-  --accent-border: rgba(63, 63, 70, 0.25);
-  --social-bg: rgba(244, 244, 245, 0.6);
-  --shadow:
-    rgba(24, 24, 27, 0.06) 0 10px 40px -10px,
-    rgba(24, 24, 27, 0.04) 0 4px 12px -4px;
+@theme {
+  --font-family-sans: "Sarabun", ui-sans-serif, system-ui, sans-serif;
+  --font-family-craft: "Mali", cursive, ui-serif, Georgia, serif;
+}
 
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+:root {
+  --text: #5c4d3f;
+  --text-h: #3c2a22;
+  --bg: #e9dfd0;
+  --surface: #faf4ea;
+  --border: #c9b49a;
+  --code-bg: #efe4d4;
+  --accent: #5c3d2e;
+  --accent-hover: #3d2619;
+  --accent-bg: rgba(92, 61, 46, 0.1);
+  --accent-border: rgba(92, 61, 46, 0.28);
+  --social-bg: rgba(239, 228, 212, 0.85);
+  --shadow:
+    rgba(60, 42, 34, 0.08) 0 10px 36px -10px,
+    rgba(60, 42, 34, 0.06) 0 4px 14px -4px;
+
+  --sans: "Sarabun", ui-sans-serif, system-ui, sans-serif;
+  --heading: "Mali", cursive, ui-serif, Georgia, serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 17px/150% var(--sans);
+  font: 17px/160% var(--sans);
   letter-spacing: 0.01em;
   color-scheme: light dark;
   color: var(--text);
@@ -37,17 +42,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #a1a1aa;
-    --text-h: #f4f4f5;
-    --bg: #18181b;
-    --surface: #27272a;
-    --border: #3f3f46;
-    --code-bg: #27272a;
-    --accent: #e4e4e7;
-    --accent-hover: #fafafa;
-    --accent-bg: rgba(244, 244, 245, 0.08);
-    --accent-border: rgba(244, 244, 245, 0.2);
-    --social-bg: rgba(63, 63, 70, 0.4);
+    --text: #a8a29e;
+    --text-h: #fafaf9;
+    --bg: #1c1917;
+    --surface: #292524;
+    --border: #44403c;
+    --code-bg: #292524;
+    --accent: #fcd34d;
+    --accent-hover: #fde68a;
+    --accent-bg: rgba(252, 211, 77, 0.1);
+    --accent-border: rgba(252, 211, 77, 0.25);
+    --social-bg: rgba(68, 64, 60, 0.45);
     --shadow:
       rgba(0, 0, 0, 0.45) 0 12px 40px -12px,
       rgba(0, 0, 0, 0.3) 0 4px 16px -4px;

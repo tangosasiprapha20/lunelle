@@ -9,18 +9,19 @@ import Contact from "./pages/Contact.jsx";
 import About from "./pages/About.jsx";
 import OrderHistory from "./pages/OrderHistory.jsx";
 
-import imgDonut from "./assets/โดนัทซอฟ.jpg";
-import imgMatchaIce from "./assets/ไอศกรีมมัทจะ.jpg";
-import imgIceCone from "./assets/ไอศกรีมโคน.jpg";
-import imgButterCookie from "./assets/คุกกี้เนยสด.jpg";
-import imgIcingCookie from "./assets/คุกกี้ไอซ์ซิ่ง.jpg";
-import imgJelly from "./assets/เจลลี่.jpg";
-import imgTruffle from "./assets/ช็อกโกแลตทรัฟ.jpg";
-import imgMarshmallow from "./assets/มาร์ชเมล.jpg";
-import imgPopcorn from "./assets/ป๊อปคอนคาราเมล.jpg";
-import imgMiniSnackBox from "./assets/กล่องขนมมะตุด.jpg";
-import imgGiftBox from "./assets/กล่องของขวัญ.jpg";
-import imgPudding from "./assets/พุดดิ้วมะพร้าว.jpg";
+import imgสร้อยคอลูกปัดแก้วโทนน้ำตาล from "./assets/สร้อยคอลูกปัดแก้วโทนน้ำตาล.jpg";
+import imgสร้อยโบฮีเมียน from "./assets/สร้อยโบฮีเมียน.jpg";
+import imgสร้อยข้อมือลูกปัดหินอ่อนครีม from "./assets/สร้อยข้อมือลูกปัดหินอ่อนครีม.jpg";
+import imgชุดลูกปัดแก้วคละโทน from "./assets/ชุดลูกปัดแก้วคละโทน.jpg";
+import imgลูกปัดเซรามิกลายดินเผา from "./assets/ลูกปัดเซรามิกลายดินเผา.jpg";
+import imgลูกปัดไม้เม็ดทองเหลือง from "./assets/ลูกปัดไม้เม็ดทองเหลือง.jpg";
+import imgแหวนเรซินโทนอบอุ่น from "./assets/แหวานลูกปัดเรซินโทนอบอุ่น.jpg";
+import imgแหวนลูกปัดหลากสี from "./assets/แหวนลุกปัดหลากสี.jpg";
+import imgต่างหูลูกปัด from "./assets/ต่างหูลูกปัดน่ารัก.jpg";
+import imgกล่องของขวัญเซตสร้อย from "./assets/กล่องของขวัญเซตสร้อย.jpg";
+import imgสร้อยลูกปัดฝังทองเหลือง from "./assets/สร้อยลูกปัดฝังทองเหลือง.jpg";
+import imgเวิร์กชอปสร้อยข้อมือ from "./assets/เวิร์กชอปสร้อยข้อมือประกอบ.jpg";
+import imgลูกปัดเซรามิก from "./assets/ลูกปัดเซรามิก.jpg";
 
 /** ส่งออเดอร์ไป Discord */
 async function sendOrderToDiscord({
@@ -58,8 +59,8 @@ async function sendOrderToDiscord({
   const payload = {
     embeds: [
       {
-        title: `🍬 ออเดอร์ #${orderId}`,
-        color: 0x111111,
+        title: `📦 ออเดอร์ #${orderId}`,
+        color: 0x78350f,
 
         fields: [
           {
@@ -77,7 +78,7 @@ async function sendOrderToDiscord({
             value: address || "-",
           },
           {
-            name: "🍭 รายการขนม",
+            name: "✦ รายการสินค้า",
             value: items || "-",
           },
           {
@@ -88,7 +89,7 @@ async function sendOrderToDiscord({
         ],
 
         footer: {
-          text: "Softlane Order System",
+          text: "Lunelle Order",
         },
 
         timestamp: new Date().toISOString(),
@@ -154,7 +155,7 @@ async function sendOrderCancellationToDiscord(order) {
           { name: "👤 ลูกค้า", value: order.name || "-", inline: true },
           { name: "📞 เบอร์", value: order.phone || "-", inline: true },
           { name: "📍 ที่อยู่", value: order.address || "-" },
-          { name: "📦 รายการขนม", value: itemsText || "-" },
+          { name: "✦ รายการสินค้า", value: itemsText || "-" },
           { name: "💰 ยอดเดิม", value: `฿${order.total || 0}`, inline: true },
           {
             name: "🕒 เวลาที่ยกเลิก",
@@ -164,7 +165,7 @@ async function sendOrderCancellationToDiscord(order) {
             inline: true,
           },
         ],
-        footer: { text: "Softlane Order System" },
+        footer: { text: "Lunelle Order" },
         timestamp: new Date().toISOString(),
       },
     ],
@@ -182,37 +183,42 @@ async function sendOrderCancellationToDiscord(order) {
   }
 }
 
+function readOrderHistory() {
+  try {
+    const raw =
+      localStorage.getItem("lunelle.orderHistory") ??
+      localStorage.getItem("softlane.orderHistory") ??
+      localStorage.getItem("mellow.orderHistory");
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function readOrderId() {
+  try {
+    const raw =
+      localStorage.getItem("lunelle.orderId") ??
+      localStorage.getItem("softlane.orderId") ??
+      localStorage.getItem("mellow.orderId");
+    const n = raw ? Number(raw) : 1001;
+    return Number.isFinite(n) ? n : 1001;
+  } catch {
+    return 1001;
+  }
+}
+
 export default function App() {
   const [cart, setCart] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [orderHistory, setOrderHistory] = useState(() => {
-    try {
-      const raw =
-        localStorage.getItem("softlane.orderHistory") ??
-        localStorage.getItem("mellow.orderHistory");
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  });
+  const [orderHistory, setOrderHistory] = useState(readOrderHistory);
 
-  // ✅ เลขออเดอร์
-  const [orderId, setOrderId] = useState(() => {
-    try {
-      const raw =
-        localStorage.getItem("softlane.orderId") ??
-        localStorage.getItem("mellow.orderId");
-      const n = raw ? Number(raw) : 1001;
-      return Number.isFinite(n) ? n : 1001;
-    } catch {
-      return 1001;
-    }
-  });
+  const [orderId, setOrderId] = useState(readOrderId);
 
   useEffect(() => {
     try {
-      localStorage.setItem("softlane.orderHistory", JSON.stringify(orderHistory));
+      localStorage.setItem("lunelle.orderHistory", JSON.stringify(orderHistory));
     } catch {
       // ignore write failures
     }
@@ -220,48 +226,106 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem("softlane.orderId", String(orderId));
+      localStorage.setItem("lunelle.orderId", String(orderId));
     } catch {
       // ignore write failures
     }
   }, [orderId]);
 
   const products = [
-    { id: 1, name: "โดนัทซอฟ", price: 89, image: imgDonut },
-    { id: 2, name: "ไอศกรีมมัทฉะ", price: 95, image: imgMatchaIce },
-    { id: 3, name: "ไอศกรีมโคน", price: 75, image: imgIceCone },
-    { id: 4, name: "คุกกี้เนยสด", price: 55, image: imgButterCookie },
-    { id: 5, name: "คุกกี้ไอซ์ซิ่ง", price: 62, image: imgIcingCookie },
-    { id: 6, name: "เจลลี่ผลไม้", price: 45, image: imgJelly },
-    { id: 7, name: "ช็อกโกแลตทรัฟ", price: 85, image: imgTruffle },
-    { id: 8, name: "มาร์ชแมลโลว์", price: 59, image: imgMarshmallow },
-    { id: 9, name: "ป๊อปคอร์นคาราเมล", price: 72, image: imgPopcorn },
-    { id: 10, name: "กล่องขนมมินิ", price: 129, image: imgMiniSnackBox },
+    {
+      id: 1,
+      name: "สร้อยคอลูกปัดแก้วโทนน้ำตาล",
+      price: 320,
+      category: "necklace",
+      image: imgสร้อยคอลูกปัดแก้วโทนน้ำตาล,
+    },
+    {
+      id: 2,
+      name: "สร้อยยาวโบฮีเมียนมือถัก",
+      price: 380,
+      category: "necklace",
+      image: imgสร้อยโบฮีเมียน,
+    },
+    {
+      id: 3,
+      name: "สร้อยข้อมือลูกปัดหินอ่อนครีม",
+      price: 260,
+      category: "necklace",
+      image: imgสร้อยข้อมือลูกปัดหินอ่อนครีม,
+    },
+    {
+      id: 4,
+      name: "ชุดลูกปัดแก้วคละโทน (DIY)",
+      price: 195,
+      category: "beads",
+      image: imgชุดลูกปัดแก้วคละโทน,
+    },
+    {
+      id: 5,
+      name: "ลูกปัดเซรามิกลายดินเผา",
+      price: 145,
+      category: "beads",
+      image: imgลูกปัดเซรามิกลายดินเผา,
+    },
+    {
+      id: 6,
+      name: "ลูกปัดไม้และเม็ดทองเหลือง",
+      price: 175,
+      category: "beads",
+      image: imgลูกปัดไม้เม็ดทองเหลือง,
+    },
+    {
+      id: 7,
+      name: "แหวนลูกปัดเรซินโทนอบอุ่น",
+      price: 220,
+      category: "ring",
+      image: imgแหวนเรซินโทนอบอุ่น,
+    },
+    {
+      id: 8,
+      name: "แหวนปรับไซส์ลูกปัดหลากสี",
+      price: 189,
+      category: "ring",
+      image: imgแหวนลูกปัดหลากสี,
+    },
+    {
+      id: 9,
+      name: "ต่างหูลูกปัดคู่ทำมือ",
+      price: 240,
+      category: "beads",
+      image: imgต่างหูลูกปัด,
+    },
+    {
+      id: 10,
+      name: "กล่องของขวัญเซ็ตสร้อย + แหวน",
+      price: 520,
+      category: "necklace",
+      image: imgกล่องของขวัญเซตสร้อย,
+    },
   ];
 
-  /** ขนมที่กำลังจะเข้าเร็วๆ นี้ (แสดงหน้าแรกเท่านั้น ยังไม่ใส่ตะกร้า) */
   const comingSoon = [
     {
       id: "soon-1",
-      name: "ชุดขนมปิกนิกหวานละมุน",
-      teaser: "คุกกี้ มาการอง และนมร้อน",
+      name: "คอลเลกชันลูกปัดฝังทองเหลือง",
+      teaser: "สร้อยและต่างหูชุดเข้าคู่",
       eta: "ปลายเดือนนี้",
-      image:
-        "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?q=80&w=1200&auto=format&fit=crop",
+      image: imgสร้อยลูกปัดฝังทองเหลือง,
     },
     {
       id: "soon-2",
-      name: "กล่องของขวัญวันเกิด",
-      teaser: "ลูกอม + การ์ดน่ารัก",
+      name: "เวิร์กช็อปประกอบสร้อยมือ",
+      teaser: "จองที่นั่งออนไลน์",
       eta: "เร็วๆ นี้",
-      image: imgGiftBox,
+      image: imgเวิร์กชอปสร้อยข้อมือ,
     },
     {
       id: "soon-3",
-      name: "พุดดิ้งมะพร้าวอ่อน",
-      teaser: "หวานน้อย เนียนนุ่ม",
+      name: "ลิมิเต็ดลูกปัดเซรามิกญี่ปุ่น",
+      teaser: "จำนวนจำกัดต่อแบบ",
       eta: "สัปดาห์หน้า",
-      image: imgPudding,
+      image: imgลูกปัดเซรามิก,
     },
   ];
 
@@ -290,7 +354,6 @@ export default function App() {
     );
   };
 
-  // ✅ ส่งออเดอร์ + เพิ่มเลขออเดอร์
   const clearCart = async (orderData) => {
     const payload =
       orderData && Array.isArray(orderData.cart)
@@ -334,7 +397,6 @@ export default function App() {
       ...prev,
     ]);
 
-    // ✅ เพิ่มเลขออเดอร์อัตโนมัติ
     setOrderId((prev) => prev + 1);
 
     setCart([]);

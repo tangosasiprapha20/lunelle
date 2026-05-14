@@ -198,12 +198,16 @@ export default function Home({
               </div>
 
               {filtered.length > 0 ? (
-                <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
                   {filtered.map((product, i) => (
                     <article
                       key={product.id}
                       className={`flex flex-col overflow-hidden rounded-[1.7rem_2.1rem_1.9rem_1.75rem] border-2 border-[#c9b49a] bg-[#fffdf8] shadow-[5px_6px_0_0_rgba(92,61,46,0.1)] transition hover:-translate-y-0.5 hover:border-[#a67c52] hover:shadow-[6px_7px_0_0_rgba(139,99,70,0.18)] ${
-                        i % 2 === 1 ? "sm:rotate-[0.4deg]" : "sm:-rotate-[0.3deg]"
+                        i % 3 === 1
+                          ? "md:rotate-[0.35deg]"
+                          : i % 3 === 2
+                            ? "md:-rotate-[0.3deg]"
+                            : ""
                       }`}
                     >
                       <div className="relative">
